@@ -1,0 +1,11 @@
+[package]
+name = "weru"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+actix = { workspace = true }
+actix-http = { workspace = true }
+actix-rt = { workspace = true }
+actix-web = { workspace = true }
