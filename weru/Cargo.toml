@@ -9,3 +9,11 @@ actix = { workspace = true }
 actix-http = { workspace = true }
 actix-rt = { workspace = true }
 actix-web = { workspace = true }
+
+[dependencies.weru-cache]
+optional = true
+path = "../crates/cache"
+
+[features]
+default = ["cache"]
+cache = ["weru-cache"]
