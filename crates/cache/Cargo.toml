@@ -13,11 +13,21 @@ thiserror.workspace = true
 optional = true
 workspace = true
 
+[dependencies.mobc]
+optional = true
+workspace = true
+
+[dependencies.redis]
+optional = true
+workspace = true
+
 [dev-dependencies]
 actix-rt.workspace = true
 
 [features]
-default = ["local"]
+default = ["local", "redis"]
 local = ["_cbor"]
+redis = ["_cbor", "_redis"]
 
 _cbor = ["dep:cbor4ii"]
+_redis = ["dep:mobc", "dep:redis"]

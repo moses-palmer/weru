@@ -1,6 +1,10 @@
 /// The possible errors when interacting with this crate.
 #[derive(Debug, PartialEq, thiserror::Error)]
 pub enum Error {
+    /// Connecting to a remote host failed.
+    #[error("failed to connect: {0}")]
+    Connection(String),
+
     /// Accessing a value failed.
     #[error("failed to access value: {0}")]
     ValueAccess(String),
@@ -40,6 +44,27 @@ pub mod cbo4ii {
     {
         fn from(source: EncodeError<E>) -> Self {
             Self::Encoding(source.to_string())
+        }
+    }
+}
+
+#[cfg(feature = "_redis")]
+pub mod redis {
+    use mobc::Error as PoolError;
+    use redis::RedisError;
+
+    impl<E> From<PoolError<E>> for super::Error
+    where
+        E: ::std::fmt::Display,
+    {
+        fn from(source: PoolError<E>) -> Self {
+            Self::Connection(source.to_string())
+        }
+    }
+
+    impl From<RedisError> for super::Error {
+        fn from(source: RedisError) -> Self {
+            Self::ValueAccess(source.to_string())
         }
     }
 }

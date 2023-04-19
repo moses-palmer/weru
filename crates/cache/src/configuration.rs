@@ -18,4 +18,19 @@ pub enum Configuration {
     /// A local cache backed by a hash map.
     #[cfg(feature = "local")]
     Local(crate::engine::backends::local::Configuration),
+
+    /// A cache backed by Redis.
+    #[cfg(feature = "redis")]
+    Redis(crate::engine::backends::redis::Configuration),
+}
+
+#[cfg(feature = "_redis")]
+pub mod redis {
+    use redis::RedisError;
+
+    impl From<RedisError> for super::Error {
+        fn from(source: RedisError) -> Self {
+            Self(source.to_string())
+        }
+    }
 }

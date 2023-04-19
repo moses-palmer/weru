@@ -10,5 +10,5 @@ pub use error::Error;
 mod traits;
 pub use traits::*;
 
-#[cfg(not(any(feature = "local")))]
+#[cfg(not(any(feature = "local", feature = "redis")))]
 compile_error!("At least one backend must be enabled!");
