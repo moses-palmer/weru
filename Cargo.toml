@@ -1,0 +1,21 @@
+[workspace.package]
+version = "0.0.0"
+authors = ["Moses Palmér <mosespalmer@gmail.com>"]
+edition = "2021"
+
+[workspace.dependencies]
+actix = "0.13"
+actix-http = "3.4"
+actix-rt = "2.9"
+actix-web = "4.4"
+async-trait = "0.1"
+thiserror = "1.0"
+
+[workspace.dependencies.serde]
+version = "1"
+features = ["derive"]
+
+[workspace]
+members = [
+    "weru",
+]
