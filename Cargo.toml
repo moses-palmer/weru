@@ -9,7 +9,10 @@ actix-http = "3.4"
 actix-rt = "2.9"
 actix-web = "4.4"
 async-trait = "0.1"
+bus = "2.4"
+futures = "0.3"
 thiserror = "1.0"
+type-map = "0.5"
 
 [workspace.dependencies.cbor4ii]
 version = "0.3"
@@ -30,5 +33,6 @@ features = ["derive"]
 [workspace]
 members = [
     "crates/cache",
+    "crates/channel",
     "weru",
 ]

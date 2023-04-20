@@ -10,10 +10,19 @@ actix-http = { workspace = true }
 actix-rt = { workspace = true }
 actix-web = { workspace = true }
 
+[dev-dependencies]
+futures.workspace = true
+
 [dependencies.weru-cache]
 optional = true
 path = "../crates/cache"
 
+[dependencies.weru-channel]
+optional = true
+path = "../crates/channel"
+
+
 [features]
-default = ["cache"]
+default = ["cache", "channel"]
 cache = ["weru-cache"]
+channel = ["weru-channel"]
