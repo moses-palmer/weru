@@ -1,0 +1,33 @@
+[package]
+name = "weru-cache"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+[dependencies.cbor4ii]
+optional = true
+workspace = true
+
+[dependencies.mobc]
+optional = true
+workspace = true
+
+[dependencies.redis]
+optional = true
+workspace = true
+
+[dev-dependencies]
+actix-rt.workspace = true
+
+[features]
+default = ["local", "redis"]
+local = ["_cbor"]
+redis = ["_cbor", "_redis"]
+
+_cbor = ["dep:cbor4ii"]
+_redis = ["dep:mobc", "dep:redis"]

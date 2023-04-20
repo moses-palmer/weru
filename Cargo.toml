@@ -11,11 +11,24 @@ actix-web = "4.4"
 async-trait = "0.1"
 thiserror = "1.0"
 
+[workspace.dependencies.cbor4ii]
+version = "0.3"
+features = ["serde1"]
+
+[workspace.dependencies.mobc]
+version = "0.8"
+features = ["tokio"]
+
+[workspace.dependencies.redis]
+version = "0.23"
+features = ["aio", "tokio-comp"]
+
 [workspace.dependencies.serde]
 version = "1"
 features = ["derive"]
 
 [workspace]
 members = [
+    "crates/cache",
     "weru",
 ]
