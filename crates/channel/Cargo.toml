@@ -14,6 +14,18 @@ thiserror.workspace = true
 workspace = true
 optional = true
 
+[dependencies.cbor4ii]
+optional = true
+workspace = true
+
+[dependencies.mobc]
+optional = true
+workspace = true
+
+[dependencies.redis]
+optional = true
+workspace = true
+
 [dependencies.type-map]
 workspace = true
 optional = true
@@ -22,5 +34,6 @@ optional = true
 actix-rt.workspace = true
 
 [features]
-default = ["local"]
+default = ["local", "redis"]
 local = ["dep:bus", "dep:type-map"]
+redis = ["dep:cbor4ii", "dep:mobc", "dep:redis"]

@@ -18,4 +18,19 @@ pub enum Configuration {
     /// A local cache backed by an in-process channel.
     #[cfg(feature = "local")]
     Local(crate::engine::backends::local::Configuration),
+
+    /// A Redis based channel.
+    #[cfg(feature = "redis")]
+    Redis(crate::engine::backends::redis::Configuration),
+}
+
+#[cfg(feature = "redis")]
+pub mod redis {
+    use redis::RedisError;
+
+    impl From<RedisError> for super::Error {
+        fn from(source: RedisError) -> Self {
+            Self(source.to_string())
+        }
+    }
 }

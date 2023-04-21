@@ -16,6 +16,10 @@ pub enum Engine {
     /// channels.
     #[cfg(feature = "local")]
     Local(backends::local::Engine),
+
+    /// A [Redis channel](backends::redis::Channel).
+    #[cfg(feature = "redis")]
+    Redis(backends::redis::Engine),
 }
 
 impl Engine {
@@ -33,6 +37,9 @@ impl Engine {
         match self {
             #[cfg(feature = "local")]
             Engine::Local(engine) => engine.channel(topic).await,
+
+            #[cfg(feature = "redis")]
+            Engine::Redis(engine) => engine.channel(topic).await,
         }
     }
 }
@@ -43,6 +50,9 @@ impl Configuration {
         match self {
             #[cfg(feature = "local")]
             Configuration::Local(c) => c.engine().await,
+
+            #[cfg(feature = "redis")]
+            Configuration::Redis(c) => c.engine().await,
         }
     }
 }
