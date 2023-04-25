@@ -45,6 +45,54 @@ pub mod cache {
     pub use weru_cache::*;
 }
 
+#[cfg(feature = "channel")]
+pub mod channel {
+    //! # The *weru* channel
+    //!
+    //! This module provides a channel, a means of sending and listening for
+    //! events on a topic.
+    //!
+    //! # Examples
+    //!
+    //! ```
+    //! # use std::time::Duration;
+    //! # use weru_channel::{
+    //!        Channel,
+    //!        Configuration,
+    //!        Engine,
+    //!        engine::backends::local,
+    //! };
+    //! # actix_rt::Runtime::new().unwrap().block_on(async {
+    //! use futures::StreamExt;
+    //!
+    //! // Create a configuration for a process local channel.
+    //! //
+    //! // You would normally load this value from a file.
+    //! let configuration = Configuration::Local(local::Configuration {
+    //!        queue_size: 10,
+    //! });
+    //!
+    //! // Create a channel engine from the configuration...
+    //! let engine = configuration.engine().await.unwrap();
+    //!
+    //! // ...and then create a channel and a listener from the engine
+    //! let channel = engine.channel::<String>("topic".to_string()).await
+    //!        .unwrap();
+    //! let listener = engine.channel::<String>("topic".to_string()).await
+    //!        .unwrap().listen().await.unwrap();
+    //!
+    //! let event = "event".into();
+    //! channel.broadcast(event).await.unwrap();
+    //!
+    //! assert_eq!(
+    //!        vec!["event".to_string()],
+    //!        listener.take(1).map(Result::unwrap).collect::<Vec<_>>().await,
+    //! );
+    //! # });
+    //! ```
+    pub use weru_channel::*;
+}
+
 // Expose the framework
 pub use actix_rt::main;
 pub mod actix {

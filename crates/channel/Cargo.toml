@@ -1,0 +1,39 @@
+[package]
+name = "weru-channel"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+futures.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+[dependencies.bus]
+workspace = true
+optional = true
+
+[dependencies.cbor4ii]
+optional = true
+workspace = true
+
+[dependencies.mobc]
+optional = true
+workspace = true
+
+[dependencies.redis]
+optional = true
+workspace = true
+
+[dependencies.type-map]
+workspace = true
+optional = true
+
+[dev-dependencies]
+actix-rt.workspace = true
+
+[features]
+default = ["local", "redis"]
+local = ["dep:bus", "dep:type-map"]
+redis = ["dep:cbor4ii", "dep:mobc", "dep:redis"]
