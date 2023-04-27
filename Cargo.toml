@@ -18,6 +18,10 @@ type-map = "0.5"
 version = "0.3"
 features = ["serde1"]
 
+[workspace.dependencies.libsqlite-sys]
+version = "0.26"
+features = ["bundled"]
+
 [workspace.dependencies.mobc]
 version = "0.8"
 features = ["tokio"]
@@ -30,9 +34,14 @@ features = ["aio", "tokio-comp"]
 version = "1"
 features = ["derive"]
 
+[workspace.dependencies.sqlx]
+version = "0.7.1"
+features = ["chrono", "macros", "migrate", "runtime-tokio"]
+
 [workspace]
 members = [
     "crates/cache",
     "crates/channel",
+    "crates/database",
     "weru",
 ]

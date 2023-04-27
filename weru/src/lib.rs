@@ -93,6 +93,56 @@ pub mod channel {
     pub use weru_channel::*;
 }
 
+#[cfg(feature = "database")]
+pub mod database {
+    //! # The *weru* database
+    //!
+    //! # Examples
+    //!
+    //! ```
+    //! # use std::time::Duration;
+    //! # use weru_database::{Configuration, Engine};
+    //! # actix_rt::Runtime::new().unwrap().block_on(async {
+    //! use weru_database::sqlx::prelude::*;
+    //!
+    //! // Create a configuration for a Sqlite in-memory database.
+    //! //
+    //! // You would normally load this value from a file.
+    //! let configuration = Configuration {
+    //!        connection_string: "sqlite::memory:".into(),
+    //! };
+    //!
+    //! // Create a database engine from the configuration...
+    //! let engine = configuration.engine().await.unwrap();
+    //!
+    //! // ...and then create a connection from the engine...
+    //! let mut connection = engine.connection().await.unwrap();
+    //! {
+    //!        // ...and finally create a transaction to interact with the
+    //!        // database
+    //!        let mut tx = connection.begin().await.unwrap();
+    //!        tx.execute(r#"
+    //!            CREATE TABLE Test (
+    //!                value TEXT NOT NULL
+    //!            );
+    //!            INSERT INTO Test(value)
+    //!            VALUES("value");
+    //!        "#).await.unwrap();
+    //!        tx.commit().await.unwrap();
+    //! }
+    //!
+    //! let value: String = {
+    //!        let mut tx = connection.begin().await.unwrap();
+    //!        tx.fetch_one(r#"
+    //!            SELECT value from Test
+    //!        "#).await.unwrap().get(0)
+    //! };
+    //! assert_eq!(value, String::from("value"));
+    //! # });
+    //! ```
+    pub use weru_database::*;
+}
+
 // Expose the framework
 pub use actix_rt::main;
 pub mod actix {

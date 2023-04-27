@@ -21,8 +21,13 @@ path = "../crates/cache"
 optional = true
 path = "../crates/channel"
 
+[dependencies.weru-database]
+optional = true
+path = "../crates/database"
+
 
 [features]
-default = ["cache", "channel"]
+default = ["cache", "channel", "database"]
 cache = ["weru-cache"]
 channel = ["weru-channel"]
+database = ["weru-database"]
