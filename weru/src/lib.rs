@@ -93,6 +93,120 @@ pub mod channel {
     pub use weru_channel::*;
 }
 
+#[cfg(feature = "database")]
+pub mod database {
+    //! # The *weru* database
+    //!
+    //! # Examples
+    //!
+    //! ```
+    //! # use std::time::Duration;
+    //! # use weru_database::{Configuration, Engine};
+    //! # actix_rt::Runtime::new().unwrap().block_on(async {
+    //! use weru_database::sqlx::prelude::*;
+    //!
+    //! // Create a configuration for a Sqlite in-memory database.
+    //! //
+    //! // You would normally load this value from a file.
+    //! let configuration = Configuration {
+    //!        connection_string: "sqlite::memory:".into(),
+    //! };
+    //!
+    //! // Create a database engine from the configuration...
+    //! let engine = configuration.engine().await.unwrap();
+    //!
+    //! // ...and then create a connection from the engine...
+    //! let mut connection = engine.connection().await.unwrap();
+    //! {
+    //!        // ...and finally create a transaction to interact with the
+    //!        // database
+    //!        let mut tx = connection.begin().await.unwrap();
+    //!        tx.execute(r#"
+    //!            CREATE TABLE Test (
+    //!                value TEXT NOT NULL
+    //!            );
+    //!            INSERT INTO Test(value)
+    //!            VALUES("value");
+    //!        "#).await.unwrap();
+    //!        tx.commit().await.unwrap();
+    //! }
+    //!
+    //! let value: String = {
+    //!        let mut tx = connection.begin().await.unwrap();
+    //!        tx.fetch_one(r#"
+    //!            SELECT value from Test
+    //!        "#).await.unwrap().get(0)
+    //! };
+    //! assert_eq!(value, String::from("value"));
+    //! # });
+    //! ```
+    pub use weru_database::*;
+
+    /// Defines database entities.
+    ///
+    /// This macro allows you to specify a `struct` that corresponds to a
+    /// table. The macro argument specifies the name of the table, and the
+    /// `struct` fields specify the columns. The first field is the unique
+    /// primary key.
+    ///
+    /// Please see the trait [`Entity`](weru_database::Entity) for more
+    /// information.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use weru::database::entity;
+    /// # use std::time::Duration;
+    /// # use weru_database::{Configuration, Engine, Entity};
+    /// # use weru_database::sqlx::prelude::*;
+    /// # actix_rt::Runtime::new().unwrap().block_on(async {
+    /// # let engine = Configuration {
+    /// #     connection_string: "sqlite::memory:".into(),
+    /// # }.engine().await.unwrap();
+    ///
+    /// #[entity(Pets)]
+    /// #[derive(Debug, PartialEq)]
+    /// pub struct Pet {
+    ///     pub name: String,
+    ///     pub leg_count: u8,
+    ///     pub pettable: bool,
+    /// }
+    ///
+    /// let mut connection = engine.connection().await.unwrap();
+    /// {
+    ///     let mut tx = connection.begin().await.unwrap();
+    /// #    tx.execute(r#"
+    /// #        CREATE TABLE Pets (
+    /// #            name TEXT NOT NULL,
+    /// #            leg_count INT NOT NULL,
+    /// #            pettable BOOLEAN NOT NULL
+    /// #        );
+    /// #    "#).await.unwrap();
+    ///     let description = PetDescription {
+    ///         leg_count: Some(8),
+    ///         pettable: Some(false),
+    ///     };
+    ///     let pet = description.entity("Spidey".into()).unwrap();
+    ///     pet.create(&mut *tx).await.unwrap();
+    ///     let recreated = Pet::read(&mut *tx, &"Spidey".into()).await
+    ///         .unwrap()
+    ///         .unwrap();
+    ///     assert_eq!(pet, recreated);
+    ///     let new_pet = Pet {
+    ///         pettable: true,
+    ///         ..pet
+    ///     };
+    ///     new_pet.update(&mut *tx).await.unwrap();
+    ///     let recreated = Pet::read(&mut *tx, &"Spidey".into()).await
+    ///         .unwrap()
+    ///         .unwrap();
+    ///     assert_eq!(new_pet, recreated);
+    /// }
+    /// # });
+    /// ```
+    pub use weru_macros::database_entity as entity;
+}
+
 // Expose the framework
 pub use actix_rt::main;
 pub mod actix {
@@ -101,3 +215,6 @@ pub mod actix {
     pub use actix_rt as rt;
     pub use actix_web as web;
 }
+
+// Expose libraries
+pub use async_trait;

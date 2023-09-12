@@ -1,0 +1,22 @@
+[package]
+name = "weru-database"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+serde.workspace = true
+sqlx.workspace = true
+thiserror.workspace = true
+
+weru-macros = { path = "../macros" }
+
+[dev-dependencies]
+actix-rt.workspace = true
+
+[features]
+default = ["sqlite"]
+mysql = ["sqlx/mysql"]
+postgres = ["sqlx/postgres"]
+sqlite = ["sqlx/sqlite"]
