@@ -43,5 +43,6 @@ members = [
     "crates/cache",
     "crates/channel",
     "crates/database",
+    "crates/macros",
     "weru",
 ]

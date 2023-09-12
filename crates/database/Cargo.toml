@@ -10,6 +10,8 @@ serde.workspace = true
 sqlx.workspace = true
 thiserror.workspace = true
 
+weru-macros = { path = "../macros" }
+
 [dev-dependencies]
 actix-rt.workspace = true
 

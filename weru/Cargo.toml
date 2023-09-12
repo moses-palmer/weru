@@ -5,10 +5,12 @@ authors.workspace = true
 edition.workspace = true
 
 [dependencies]
+async-trait = { workspace = true }
 actix = { workspace = true }
 actix-http = { workspace = true }
 actix-rt = { workspace = true }
 actix-web = { workspace = true }
+serde = { workspace = true }
 
 [dev-dependencies]
 futures.workspace = true
@@ -25,9 +27,14 @@ path = "../crates/channel"
 optional = true
 path = "../crates/database"
 
+[dependencies.weru-macros]
+optional = true
+path = "../crates/macros"
+
 
 [features]
-default = ["cache", "channel", "database"]
+default = ["cache", "channel", "database", "macros"]
 cache = ["weru-cache"]
 channel = ["weru-channel"]
 database = ["weru-database"]
+macros = ["weru-macros"]

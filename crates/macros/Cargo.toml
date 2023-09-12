@@ -1,0 +1,15 @@
+[package]
+name = "weru-macros"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1"
+
+[dependencies.syn]
+version = "1"
+features = ["full", "extra-traits"]
