@@ -207,6 +207,55 @@ pub mod database {
     pub use weru_macros::database_entity as entity;
 }
 
+#[cfg(feature = "email")]
+pub mod email {
+    //! # The *weru* email sender
+    //!
+    //! # Examples
+    //!
+    //! ```
+    //! # use std::time::Duration;
+    //! # use weru_email::{Configuration, Engine, configuration, sender};
+    //! # use weru_email::engine::backends::drop;
+    //! # use weru_email::configuration::Transport;
+    //! # actix_rt::Runtime::new().unwrap().block_on(async {
+    //!
+    //! // Create a configuration for a no-op email sender.
+    //! //
+    //! // You would normally load this value from a file.
+    //! let configuration = Configuration {
+    //!     from: "Test Sender <test@email.test>".parse().unwrap(),
+    //!     templates: configuration::Templates {
+    //!         default_language: "l1".into(),
+    //!         path: "../crates/email/resources/test/email/template/valid.toml"
+    //!             .into(),
+    //!     },
+    //!     transport: Transport::Drop(drop::Configuration),
+    //! };
+    //!
+    //! // Create an e-mail engine from the configuration...
+    //! let engine = configuration.engine().await.unwrap();
+    //!
+    //! // ...and then create a sender from the engine...
+    //! let sender = engine.sender().await;
+    //!
+    //! let replacements = [
+    //!     ("replace".into(), "Hello!".into()),
+    //! ].iter().cloned().collect();
+    //! sender.send(
+    //!     sender::Mailboxes::new()
+    //!         .with("Recipient 1 <recipient1@email.test>".parse().unwrap())
+    //!         .with("Recipient 2 <recipient2@email.test>".parse().unwrap())
+    //!         .with("Recipient 3 <recipient3@email.test>".parse().unwrap()),
+    //!     &["en-GB".into()],
+    //!     &"t1".into(),
+    //!     &replacements,
+    //! ).await.unwrap();
+    //! # });
+    //! ```
+    pub use weru_email::*;
+}
+
 // Expose the framework
 pub use actix_rt::main;
 pub mod actix {
