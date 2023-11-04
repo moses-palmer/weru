@@ -1,4 +1,5 @@
 use lettre::message::Mailbox;
+use lettre::transport::smtp::Error as SMTPError;
 use serde::{Deserialize, Serialize};
 
 use crate::template::{Error as TemplateError, Language};
@@ -42,10 +43,21 @@ pub enum Transport {
     /// Using this will drop all e-mails.
     #[cfg(feature = "drop")]
     Drop(crate::engine::backends::drop::Configuration),
+
+    /// An SMTP transport.
+    #[cfg(feature = "smtp")]
+    SMTP(crate::engine::backends::smtp::Configuration),
 }
 
 impl From<TemplateError> for Error {
     fn from(source: TemplateError) -> Self {
+        Self(source.to_string())
+    }
+}
+
+#[cfg(feature = "smtp")]
+impl From<SMTPError> for Error {
+    fn from(source: SMTPError) -> Self {
         Self(source.to_string())
     }
 }
