@@ -22,7 +22,7 @@ features = ["serde1"]
 [workspace.dependencies.lettre]
 default-features = false
 version = "0.11"
-features = ["builder", "serde", "tokio1"]
+features = ["builder", "rustls-tls", "serde", "tokio1", "tokio1-rustls-tls"]
 
 [workspace.dependencies.libsqlite-sys]
 version = "0.26"

@@ -16,5 +16,6 @@ toml.workspace = true
 actix-rt.workspace = true
 
 [features]
-default = ["drop"]
+default = ["drop", "smtp"]
 drop = []
+smtp = ["lettre/smtp-transport"]

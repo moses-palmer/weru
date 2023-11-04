@@ -32,6 +32,10 @@ pub enum Transport {
     /// No transport.
     #[cfg(feature = "drop")]
     Drop(backends::drop::Transport),
+
+    /// An SMTP transport.
+    #[cfg(feature = "smtp")]
+    SMTP(backends::smtp::Transport),
 }
 
 impl Engine {
@@ -49,6 +53,13 @@ impl Engine {
                 self.default_language.clone(),
                 backends::drop::Transport::from(c.clone()),
             )),
+            #[cfg(feature = "smtp")]
+            SMTP(c) => Box::new(LettreSender::new(
+                self.from.clone(),
+                self.templates.clone(),
+                self.default_language.clone(),
+                backends::smtp::Transport::from(c.clone()),
+            )),
         }
     }
 }
@@ -63,6 +74,8 @@ impl Configuration {
         let transport = match &self.transport {
             #[cfg(feature = "drop")]
             Drop(c) => Transport::Drop(c.transport().await?),
+            #[cfg(feature = "smtp")]
+            SMTP(c) => Transport::SMTP(c.transport().await?),
         };
         Ok(Engine {
             from,
