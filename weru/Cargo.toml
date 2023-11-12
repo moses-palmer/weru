@@ -52,3 +52,19 @@ database = ["weru-database"]
 email = ["weru-email"]
 session = ["weru-session"]
 macros = ["weru-macros"]
+
+cache-local = ["cache", "weru-cache/local"]
+cache-redis = ["cache", "weru-cache/redis"]
+
+channel-local = ["channel", "weru-channel/local"]
+channel-redis = ["channel", "weru-channel/redis"]
+
+database-mysql = ["database", "weru-database/mysql"]
+database-postgres = ["database", "weru-database/postgres"]
+database-sqlite = ["database", "weru-database/sqlite"]
+
+email-drop = ["email", "weru-email/drop"]
+email-smtp = ["email", "weru-email/smtp"]
+
+session-cookie = ["session", "weru-session/cookie"]
+session-redis = ["session", "weru-session/redis"]
