@@ -1,0 +1,21 @@
+[package]
+name = "weru-email"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+lettre.workspace = true
+pulldown-cmark.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+toml.workspace = true
+
+[dev-dependencies]
+actix-rt.workspace = true
+
+[features]
+default = ["drop", "smtp"]
+drop = []
+smtp = ["lettre/smtp-transport"]
