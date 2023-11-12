@@ -12,11 +12,17 @@ async-trait = "0.1"
 bus = "2.4"
 futures = "0.3"
 thiserror = "1.0"
+toml = "0.8"
 type-map = "0.5"
 
 [workspace.dependencies.cbor4ii]
 version = "0.3"
 features = ["serde1"]
+
+[workspace.dependencies.lettre]
+default-features = false
+version = "0.11"
+features = ["builder", "rustls-tls", "serde", "tokio1", "tokio1-rustls-tls"]
 
 [workspace.dependencies.libsqlite-sys]
 version = "0.26"
@@ -25,6 +31,10 @@ features = ["bundled"]
 [workspace.dependencies.mobc]
 version = "0.8"
 features = ["tokio"]
+
+[workspace.dependencies.pulldown-cmark]
+default-features = false
+version = "0.9"
 
 [workspace.dependencies.redis]
 version = "0.23"
@@ -43,6 +53,7 @@ members = [
     "crates/cache",
     "crates/channel",
     "crates/database",
+    "crates/email",
     "crates/macros",
     "weru",
 ]

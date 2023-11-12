@@ -27,14 +27,19 @@ path = "../crates/channel"
 optional = true
 path = "../crates/database"
 
+[dependencies.weru-email]
+optional = true
+path = "../crates/email"
+
 [dependencies.weru-macros]
 optional = true
 path = "../crates/macros"
 
 
 [features]
-default = ["cache", "channel", "database", "macros"]
+default = ["cache", "channel", "database", "email", "macros"]
 cache = ["weru-cache"]
 channel = ["weru-channel"]
 database = ["weru-database"]
+email = ["weru-email"]
 macros = ["weru-macros"]
