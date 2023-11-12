@@ -1,3 +1,99 @@
+//! # Weru
+//!
+//! *Weru* is a wrapper around *actix-web* providing a comprehensive list of
+//! additional dependencies and simple components.
+//!
+//! # Example
+//!
+//! ```no_run
+//! use std::time::Duration;
+//! use weru::actix::web::{error, get, put, web, App, HttpServer, Responder};
+//!
+//! type Key = String;
+//!
+//! #[derive(Clone, Debug, serde::Deserialize, serde::Serialize)]
+//! struct Value {
+//!     name: String,
+//! }
+//!
+//! #[get("/cache/{key}")]
+//! async fn read_from_cache(
+//!     cache: web::Data<Box<dyn weru::cache::Cache<Key, Value>>>,
+//!     key: web::Path<String>,
+//! ) -> impl Responder {
+//!     cache
+//!         .get(&key)
+//!         .await
+//!         .map_err(|e| error::ErrorInternalServerError(e.to_string()))
+//!         .and_then(|i| i.ok_or_else(|| error::ErrorNotFound("not found")))
+//!         .map(web::Json)
+//! }
+//!
+//! #[put("/cache/{key}")]
+//! async fn write_to_cache(
+//!     cache: web::Data<Box<dyn weru::cache::Cache<Key, Value>>>,
+//!     key: web::Path<String>,
+//!     value: web::Json<Value>,
+//! ) -> impl Responder {
+//!     cache
+//!         .put(key.to_string(), value.clone(), Duration::from_secs(5 * 60))
+//!         .await
+//!         .map_err(|e| error::ErrorInternalServerError(e.to_string()))
+//!         .map(|_| "created")
+//! }
+//!
+//! #[weru::main]
+//! async fn main() -> Result<(), std::io::Error> {
+//!     weru::env_logger::builder()
+//!         .is_test(true)
+//!         .try_init()
+//!         .expect("logging initialised");
+//!
+//!     let cache = web::Data::new(
+//!         weru::cache::Configuration::Local(
+//!             weru::cache::engine::backends::local::Configuration,
+//!         )
+//!         .engine()
+//!         .await
+//!         .expect("a local cache engine")
+//!         .cache::<Key, Value>("cache-name")
+//!         .await
+//!         .expect("a local cache"),
+//!     );
+//!
+//!     HttpServer::new(move || {
+//!         App::new()
+//!             .app_data(cache.clone())
+//!             .service(read_from_cache)
+//!             .service(write_to_cache)
+//!     })
+//!     .bind("localhost:8080")
+//!     .unwrap()
+//!     .run()
+//!     .await
+//! }
+//! ```
+//!
+//! This application sets up a web server acting as an HTTP interface to a
+//! local cache. The `Cargo.toml` for the project looks like this:
+//!
+//! ```toml
+//! [package]
+//! name = "a-test"
+//! version = "0.1.0"
+//! edition = "2021"
+//!
+//! [dependencies]
+//! actix-rt = "*"
+//! actix-web = "*"
+//! serde = "1"
+//! weru = { ... }
+//! ```
+//!
+//! The *actix* and *serde* dependencies are required to use the macros defined
+//! in those crates. To use *sqlx* migration macros, add *sqlx* as a
+//! dependency.
+
 #[cfg(feature = "cache")]
 pub mod cache {
     //! # The *weru* cache
