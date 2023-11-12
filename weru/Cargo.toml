@@ -9,6 +9,7 @@ async-trait = { workspace = true }
 actix = { workspace = true }
 actix-http = { workspace = true }
 actix-rt = { workspace = true }
+actix-session = { workspace = true }
 actix-web = { workspace = true }
 serde = { workspace = true }
 
