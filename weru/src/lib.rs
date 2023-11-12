@@ -296,6 +296,7 @@ pub mod actix {
     pub use actix_rt as rt;
     pub use actix_session as session;
     pub use actix_web as web;
+    pub use actix_web_actors as web_actors;
 }
 
 // Expose libraries
