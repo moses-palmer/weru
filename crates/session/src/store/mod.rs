@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 use crate::{configuration, Configuration};
 
 pub mod cookie;
+pub mod redis;
 
 ///
 type SessionState = HashMap<String, String>;
@@ -22,6 +23,10 @@ pub enum Store {
     /// A storage backed by a cookie value.
     #[cfg(feature = "cookie")]
     Cookie(cookie::Store),
+
+    /// A storage backed by Redis.
+    #[cfg(feature = "redis")]
+    Redis(redis::Store),
 }
 
 impl Store {
@@ -47,6 +52,8 @@ impl Clone for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(store) => Cookie(cookie::clone(store)),
+            #[cfg(feature = "redis")]
+            Redis(store) => Redis(redis::clone(store)),
         }
     }
 }
@@ -58,6 +65,8 @@ impl Configuration {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(c) => c.store().await.map(Store::Cookie),
+            #[cfg(feature = "redis")]
+            Redis(c) => c.store().await.map(Store::Redis),
         }
     }
 
@@ -67,6 +76,8 @@ impl Configuration {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(c) => Key::from(&c.secret.key),
+            #[cfg(feature = "redis")]
+            Redis(c) => Key::from(&c.secret.key),
         }
     }
 
@@ -76,6 +87,8 @@ impl Configuration {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(c) => c.name.clone(),
+            #[cfg(feature = "redis")]
+            Redis(c) => c.name.clone(),
         }
     }
 }
@@ -90,6 +103,8 @@ impl SessionStore for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(s) => s.load(session_key).await,
+            #[cfg(feature = "redis")]
+            Redis(s) => s.load(session_key).await,
         }
     }
 
@@ -102,6 +117,8 @@ impl SessionStore for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(s) => s.save(session_state, ttl).await,
+            #[cfg(feature = "redis")]
+            Redis(s) => s.save(session_state, ttl).await,
         }
     }
 
@@ -115,6 +132,8 @@ impl SessionStore for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(s) => s.update(session_key, session_state, ttl).await,
+            #[cfg(feature = "redis")]
+            Redis(s) => s.update(session_key, session_state, ttl).await,
         }
     }
 
@@ -127,6 +146,8 @@ impl SessionStore for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(s) => s.update_ttl(session_key, ttl).await,
+            #[cfg(feature = "redis")]
+            Redis(s) => s.update_ttl(session_key, ttl).await,
         }
     }
 
@@ -138,6 +159,8 @@ impl SessionStore for Store {
         match self {
             #[cfg(feature = "cookie")]
             Cookie(s) => s.delete(session_key).await,
+            #[cfg(feature = "redis")]
+            Redis(s) => s.delete(session_key).await,
         }
     }
 }

@@ -18,6 +18,10 @@ pub enum Configuration {
     /// A session backed by an encrypted cookie.
     #[cfg(feature = "cookie")]
     Cookie(crate::store::cookie::Configuration),
+
+    /// A session backed by Redis.
+    #[cfg(feature = "redis")]
+    Redis(crate::store::redis::Configuration),
 }
 
 impl From<anyhow::Error> for Error {
