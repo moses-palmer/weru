@@ -256,6 +256,38 @@ pub mod email {
     pub use weru_email::*;
 }
 
+#[cfg(feature = "session")]
+pub mod session {
+    //! # The *weru* session middleware.
+    //!
+    //! # Examples
+    //!
+    //! ```
+    //! # use weru_session::Configuration;
+    //! # use weru_session::store::cookie;
+    //! # actix_rt::Runtime::new().unwrap().block_on(async {
+    //!
+    //! // Create a configuration for a cookie based session middleware
+    //! //
+    //! // You would normally load this value from a file.
+    //! let configuration = Configuration::Cookie( cookie::Configuration {
+    //!    secret: "\
+    //!        e464c40145589aad0a25331fdc835dbd1a442e53b1604c1bf1665671a478324d\
+    //!        f42ca55f76ef4f5c5e25e6ca18438566ca6fff5cefcc83a0042157df9dee4521"
+    //!        .parse().unwrap(),
+    //!    name: "cookie-name".into(),
+    //! });
+    //!
+    //! // Create the cookie store
+    //! let store = configuration.store().await.unwrap();
+    //!
+    //! // Create the session middleware
+    //! let middleware = store.clone().middleware(&configuration);
+    //! # });
+    //! ```
+    pub use weru_session::*;
+}
+
 // Expose the framework
 pub use actix_rt::main;
 pub mod actix {
