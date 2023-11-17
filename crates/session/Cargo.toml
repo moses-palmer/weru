@@ -1,0 +1,18 @@
+[package]
+name = "weru-session"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+actix-session.workspace = true
+actix-web.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+
+
+[features]
+default = ["cookie"]
+cookie = ["actix-session/cookie-session"]
