@@ -13,7 +13,6 @@ pub use traits::Entity;
 pub use sqlx;
 
 #[cfg(not(any(
-    feature = "mssql",
     feature = "mysql",
     feature = "postgres",
     feature = "sqlite",

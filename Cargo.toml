@@ -5,15 +5,15 @@ edition = "2021"
 
 [workspace.dependencies]
 actix = "0.13"
-actix-http = "3.4"
-actix-rt = "2.9"
-actix-session = "0.8"
-actix-web = "4.4"
-actix-web-actors = "4.2"
+actix-http = "3.9"
+actix-rt = "2.10"
+actix-session = "0.10.1"
+actix-web = "4.9"
+actix-web-actors = "4.3"
 anyhow = "1.0"
 async-trait = "0.1"
 bus = "2.4"
-env_logger = "0.10"
+env_logger = "0.11"
 futures = "0.3"
 log = "0.4"
 thiserror = "1.0"
@@ -39,10 +39,11 @@ features = ["tokio"]
 
 [workspace.dependencies.pulldown-cmark]
 default-features = false
-version = "0.9"
+version = "0.12"
+features = ["html"]
 
 [workspace.dependencies.redis]
-version = "0.23"
+version = "0.28"
 features = ["aio", "tokio-comp"]
 
 [workspace.dependencies.serde]
@@ -50,7 +51,7 @@ version = "1"
 features = ["derive"]
 
 [workspace.dependencies.sqlx]
-version = "0.7.1"
+version = "0.8"
 features = ["chrono", "macros", "migrate", "runtime-tokio"]
 
 [workspace]

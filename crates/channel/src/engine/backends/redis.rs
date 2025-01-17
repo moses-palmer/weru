@@ -107,10 +107,9 @@ where
     async fn listen(
         &self,
     ) -> Result<BoxStream<'static, Result<T, Error>>, Error> {
-        let mut pubsub =
-            self.client.get_async_connection().await?.into_pubsub();
-        pubsub.subscribe(&self.channel).await?;
-        Ok(Box::pin(pubsub.into_on_message().map(|msg| {
+        let (mut sink, stream) = self.client.get_async_pubsub().await?.split();
+        sink.subscribe(&self.channel).await?;
+        Ok(Box::pin(stream.map(|msg| {
             Ok(cbor4ii::serde::from_slice(msg.get_payload_bytes())?)
         })))
     }

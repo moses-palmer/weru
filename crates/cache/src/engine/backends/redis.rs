@@ -143,7 +143,7 @@ where
         let key = self.key_serialize(key)?;
 
         match conn.get(&key).await? {
-            redis::Value::Data(value) => {
+            redis::Value::BulkString(value) => {
                 Ok(Some(self.value_deserialize(&value)?))
             }
             _ => Ok(None),
@@ -155,7 +155,7 @@ where
         let key = self.key_serialize(key)?;
 
         match conn.get_del(&key).await? {
-            redis::Value::Data(value) => {
+            redis::Value::BulkString(value) => {
                 Ok(Some(self.value_deserialize(&value)?))
             }
             _ => Ok(None),
@@ -216,7 +216,9 @@ where
         };
 
         Ok(match previous {
-            redis::Value::Data(value) => Some(self.value_deserialize(&value)?),
+            redis::Value::BulkString(value) => {
+                Some(self.value_deserialize(&value)?)
+            }
             _ => None,
         })
     }

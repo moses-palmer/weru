@@ -93,7 +93,6 @@ impl Configuration {
     }
 }
 
-#[async_trait::async_trait(?Send)]
 impl SessionStore for Store {
     async fn load(
         &self,
