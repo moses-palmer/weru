@@ -16,4 +16,4 @@ thiserror.workspace = true
 [features]
 default = ["cookie", "redis"]
 cookie = ["actix-session/cookie-session"]
-redis = ["actix-session/redis-rs-session"]
+redis = ["actix-session/redis-session"]

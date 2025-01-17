@@ -258,18 +258,32 @@ impl Template {
                     self.interpolate(&text, |k| replacements(k)).into(),
                 ))
             }
-            Event::Start(Tag::Link(lt, url, text)) => Event::Start(Tag::Link(
-                lt,
-                self.interpolate(&url, |k| replacements(k)).into(),
-                self.interpolate(&text, |k| replacements(k)).into(),
-            )),
-            Event::Start(Tag::Image(lt, url, text)) => {
-                Event::Start(Tag::Image(
-                    lt,
-                    self.interpolate(&url, |k| replacements(k)).into(),
-                    self.interpolate(&text, |k| replacements(k)).into(),
-                ))
-            }
+            Event::Start(Tag::Link {
+                link_type,
+                dest_url,
+                title,
+                id,
+            }) => Event::Start(Tag::Link {
+                link_type,
+                dest_url: self
+                    .interpolate(&dest_url, |k| replacements(k))
+                    .into(),
+                title: self.interpolate(&title, |k| replacements(k)).into(),
+                id,
+            }),
+            Event::Start(Tag::Image {
+                link_type,
+                dest_url,
+                title,
+                id,
+            }) => Event::Start(Tag::Image {
+                link_type,
+                dest_url: self
+                    .interpolate(&dest_url, |k| replacements(k))
+                    .into(),
+                title: self.interpolate(&title, |k| replacements(k)).into(),
+                id,
+            }),
             e => e,
         })
     }
