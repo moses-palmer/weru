@@ -245,7 +245,7 @@ impl Manager for ConnectionManager {
         &self,
         mut conn: Self::Connection,
     ) -> Result<Self::Connection, Self::Error> {
-        redis::cmd("PING").query_async(&mut conn).await?;
+        redis::cmd("PING").query_async::<()>(&mut conn).await?;
         Ok(conn)
     }
 }
