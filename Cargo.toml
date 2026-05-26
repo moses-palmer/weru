@@ -1,7 +1,7 @@
 [workspace.package]
 version = "0.0.0"
 authors = ["Moses Palmér <mosespalmer@gmail.com>"]
-edition = "2021"
+edition = "2024"
 
 [workspace.dependencies]
 actix = "0.13"
@@ -55,6 +55,7 @@ version = "0.9"
 features = ["chrono", "macros", "migrate", "runtime-tokio"]
 
 [workspace]
+resolver = "3"
 members = [
     "crates/cache",
     "crates/channel",
